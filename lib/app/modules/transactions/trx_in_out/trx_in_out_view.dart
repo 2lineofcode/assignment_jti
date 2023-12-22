@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,18 +10,19 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/app_color.dart';
 import '../../../core/app_pref.dart';
-import '../../../helpers/helper_date_picker.dart';
-import '../../../helpers/helper_decoration.dart';
+import '../../../helpers/helpers.dart';
 import '../../../widgets/custom_dropdown.dart';
-import 'trx_in_controller.dart';
+import 'trx_in_out_controller.dart';
 
-class TrxInView extends GetView<TrxInController> {
-  const TrxInView({Key? key}) : super(key: key);
+class TrxInOutView extends GetView<TrxInOutController> {
+  const TrxInOutView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Masuk')),
+      appBar: AppBar(
+        title: Obx(() => Text(controller.trxType.value.trxCode == 1 ? 'Masuk' : 'Keluar')),
+      ),
       body: VStack(
         [
           /// dropdown :outlet
@@ -31,10 +34,9 @@ class TrxInView extends GetView<TrxInController> {
                 Obx(
                   () => CustomDropdown(
                     hint: 'Nama Outlet',
-                    prefixText: 'Outlet: ',
-                    value: controller.selectedOutlet.value,
+                    value: controller.selectedOutletName.value,
                     dropdownItems: controller.listOutlet,
-                    onChanged: (s) => controller.selectedOutlet.value = s ?? '',
+                    onChanged: (s) => controller.selectedOutletName.value = s ?? '',
                   ).centered(),
                 ),
               ],
@@ -51,10 +53,35 @@ class TrxInView extends GetView<TrxInController> {
                   decoration: DecorationHelper.box(),
                   child: '${controller.startDateSelected.value}'.text.make().p12(),
                 ).pOnly(bottom: 12).onTap(() {
-                  DatePickerHelper.materialDatePicker(callback: (dt) {
+                  DatePickerHelper.material(callback: (dt) {
                     controller.startDateSelected.value = DateFormat(kDateFormatYMD).format(dt);
                   });
                 }),
+              ),
+
+              /// title :only for trx type 2 (keluar/kredit)
+              Obx(
+                () => controller.trxType.value.trxCode == 2
+                    ? VStack([
+                        'Judul'.text.white.size(12).make().pOnly(bottom: 8),
+                        Container(
+                          width: double.infinity,
+                          decoration: DecorationHelper.box(),
+                          child: HStack(
+                            [
+                              TextField(
+                                controller: controller.tfTitle,
+                                style: TextStyle(color: primaryColor, fontSize: 13),
+                                decoration: DecorationHelper.input(
+                                  fillColor: Colors.white,
+                                  hint: 'Type Something...',
+                                ),
+                              ).expand(),
+                            ],
+                          ),
+                        ).pOnly(bottom: 12),
+                      ])
+                    : SizedBox(),
               ),
 
               /// input
@@ -88,27 +115,55 @@ class TrxInView extends GetView<TrxInController> {
 
               /// upload photo
               'Photo'.text.white.size(12).make().pOnly(bottom: 8),
-              Container(
-                width: double.infinity,
-                decoration: DecorationHelper.box(),
-                child: HStack(
-                  [
-                    Container(
-                      height: 63,
-                      constraints: BoxConstraints(minWidth: 70),
-                      color: secondaryColor,
-                      child: IconButton(onPressed: () {}, icon: Icon(Icons.add_box_outlined)),
-                    ).cornerRadius(12).pOnly(right: 12),
-                    for (var i = 0; i < 3; i++) ...[
-                      Container(
-                        height: 63,
-                        constraints: BoxConstraints(minWidth: 70),
-                        color: secondaryColor,
-                      ).cornerRadius(12).opacity(value: 0.3).pOnly(right: 12),
+              Obx(
+                () => Container(
+                  width: double.infinity,
+                  decoration: DecorationHelper.box(),
+                  child: HStack(
+                    [
+                      Visibility(
+                        visible: controller.photos.length < 4,
+                        child: Container(
+                          height: 63,
+                          constraints: BoxConstraints(minWidth: 70),
+                          color: secondaryColor,
+                          child: IconButton(
+                            onPressed: () async {
+                              if (controller.photos.length >= 4) {
+                                SnackbarHelper.warning('max upload photo 4');
+                                return;
+                              }
+                              await PickerHelper.image(callback: (img64) => controller.photos.add(img64));
+                            },
+                            icon: Icon(Icons.add_box_outlined),
+                          ),
+                        ).cornerRadius(12).pOnly(right: 12),
+                      ),
+                      for (var i = 0; i < controller.photos.length; i++) ...[
+                        Container(
+                          height: 63,
+                          constraints: BoxConstraints(minWidth: 70, maxWidth: 70),
+                          color: secondaryColor,
+                          child: Stack(
+                            children: [
+                              Image.memory(
+                                base64Decode(controller.photos[i]),
+                                fit: BoxFit.cover,
+                                height: 70,
+                                width: 70,
+                              ),
+                              Icon(
+                                Icons.remove_circle,
+                                color: Vx.red400,
+                              ).onTap(() => controller.photos.removeAt(i)).positioned(right: 2, top: 2),
+                            ],
+                          ),
+                        ).cornerRadius(12).pOnly(right: 12),
+                      ],
                     ],
-                  ],
-                ).p12(),
-              ).pOnly(bottom: 12),
+                  ).p12(),
+                ).pOnly(bottom: 12),
+              ),
 
               /// description
               'Keterangan'.text.white.size(12).make().pOnly(bottom: 8),
@@ -133,7 +188,7 @@ class TrxInView extends GetView<TrxInController> {
             ],
           ).p16(),
         ],
-      ),
+      ).scrollVertical(),
       bottomNavigationBar: ElevatedButton(
         onPressed: () => controller.onSubmit(),
         child: 'Submit'.text.make(),

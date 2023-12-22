@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+/*
+ * LoadingUiHelper
+ * Created by AditP at (c) May 2019, LLC. All rights reserved.
+ */
 mixin LoadingUiHelper {
   /// -- example implementation
   /// ```dart

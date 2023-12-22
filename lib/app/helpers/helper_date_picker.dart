@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,10 +11,8 @@ import 'helper_decoration.dart';
  * Created by AditP at (c) 2019, LLC. All rights reserved.
  */
 mixin DatePickerHelper {
-  // —————————————————————————————————————————————————————————————————————————
-  // DATE PICKER (CUPERTINO) —————————————————————————————————————————————————
-  // —————————————————————————————————————————————————————————————————————————
-  static void cupertinoDatePicker({
+  /// ! DATE PICKER (CUPERTINO) —————————————————————————————————————————————————
+  static void cupertino({
     required Function(DateTime) callback,
     String title = 'Select Date',
     String btnOKText = 'Select',
@@ -88,80 +84,8 @@ mixin DatePickerHelper {
     );
   }
 
-  static void cupertinoTimePicker({
-    required Function(DateTime) callback,
-    String title = 'Select Time',
-    String btnOKText = 'Select',
-    String btnCancelText = 'Cancel',
-    DateTime? initialDate,
-    DateTime? minDate,
-    DateTime? maxDate,
-    CupertinoDatePickerMode mode = CupertinoDatePickerMode.date,
-  }) {
-    var output = DateTime.now();
-    showCupertinoModalPopup(
-      context: Get.context!,
-      builder: (_) => CupertinoApp(
-        debugShowCheckedModeBanner: false,
-        builder: (context, child) => Container(
-          height: Get.size.height * 0.40,
-          decoration: DecorationHelper.top(),
-          child: Column(
-            children: [
-              DashDivider().pOnly(top: 12),
-              HStack([
-                title.text.size(14).color(Get.theme.textTheme.displayMedium?.color).fontWeight(FontWeight.w500).make().expand(),
-              ]).pOnly(left: 20, top: 12, bottom: 12),
-              Divider(),
-              CupertinoTheme(
-                data: CupertinoThemeData(
-                  brightness: Get.isDarkMode ? Brightness.dark : Brightness.light,
-                  textTheme: CupertinoTextThemeData(
-                    dateTimePickerTextStyle: TextStyle(
-                      color: Get.theme.textTheme.bodyLarge?.color,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                ),
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.time,
-                  initialDateTime: initialDate ?? DateTime.now(),
-                  minimumDate: minDate ?? DateTime.now().subtract(1.seconds),
-                  // somehow must like this =,=
-                  maximumDate: maxDate?.add(1.minutes) ?? DateTime(2050),
-                  onDateTimeChanged: (val) => output = val,
-                  dateOrder: DatePickerDateOrder.dmy,
-                ),
-              ).expand(),
-              HStack(
-                [
-                  ElevatedButton(
-                    onPressed: Get.back,
-                    child: Text(btnCancelText, style: TextStyle(color: Vx.red500)),
-                  ).expand(),
-                  1.widthBox,
-                  ElevatedButton(
-                    onPressed: () {
-                      callback.call(output);
-                      Navigator.of(Get.context!).pop();
-                    },
-                    child: Text(btnOKText, style: TextStyle(color: Get.theme.textTheme.displayLarge?.color)),
-                  ).expand(),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-// —————————————————————————————————————————————————————————————————————————
-// DATE PICKER (MATERIAL) ——————————————————————————————————————————————————
-// —————————————————————————————————————————————————————————————————————————
-  static Future<void> materialDatePicker({
+  /// ! DATE PICKER (MATERIAL) ——————————————————————————————————————————————————
+  static Future<void> material({
     required Function(DateTime) callback,
     DateTime? initialDate,
     DateTime? minDate,
@@ -176,87 +100,5 @@ mixin DatePickerHelper {
     if (picked != null) {
       callback.call(picked);
     }
-  }
-
-  static Future<void> materialTimePicker({
-    required Function(TimeOfDay) callback,
-    DateTime? initialDate,
-    DateTime? minDate,
-    DateTime? maxDate,
-  }) async {
-    final picked = await showTimePicker(
-      context: Get.context!,
-      initialTime: TimeOfDay.now(),
-    );
-    if (picked != null) {
-      callback.call(picked);
-    }
-  }
-
-// ------------------------------------------------------------------------
-// ADAPTIVE DATE PICKER
-// ------------------------------------------------------------------------
-  static Future<void> adaptiveDatePicker({
-    required Function(DateTime) callback,
-    DateTime? initialDate,
-    DateTime? minDate,
-    DateTime? maxDate,
-  }) async {
-    if (Platform.isAndroid) {
-      await materialDatePicker(
-        initialDate: initialDate,
-        minDate: minDate,
-        maxDate: maxDate,
-        callback: callback,
-      );
-    } else {
-      cupertinoDatePicker(
-        initialDate: initialDate,
-        minDate: minDate,
-        maxDate: maxDate,
-        callback: callback,
-      );
-    }
-  }
-
-// ------------------------------------------------------------------------
-// ADAPTIVE TIME PICKER
-// ------------------------------------------------------------------------
-  static Future<void> adaptiveTimePicker({
-    required Function(dynamic) callback,
-    DateTime? initialDate,
-    DateTime? minDate,
-    DateTime? maxDate,
-  }) async {
-    if (Platform.isAndroid) {
-      await materialTimePicker(
-        initialDate: initialDate,
-        minDate: minDate,
-        maxDate: maxDate,
-        callback: callback,
-      );
-    } else {
-      cupertinoTimePicker(
-        initialDate: initialDate,
-        minDate: minDate,
-        maxDate: maxDate,
-        callback: callback,
-      );
-    }
-  }
-
-  static Future<void> cupertinoDatetimePicker({
-    required Function(dynamic) callback,
-    DateTime? initialDate,
-    DateTime? minDate,
-    DateTime? maxDate,
-  }) async {
-    cupertinoDatePicker(
-      initialDate: initialDate,
-      minDate: minDate,
-      maxDate: maxDate,
-      callback: callback,
-      mode: CupertinoDatePickerMode.dateAndTime,
-    );
   }
 }

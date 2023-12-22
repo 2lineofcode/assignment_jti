@@ -108,7 +108,7 @@ class CustomDropdown extends StatelessWidget {
         selectedItemBuilder: selectedItemBuilder,
         buttonStyleData: ButtonStyleData(
           height: buttonHeight ?? 40,
-          width: buttonWidth ?? 140,
+          width: buttonWidth ?? 170,
           padding: buttonPadding ?? const EdgeInsets.only(left: 14, right: 14),
           decoration: buttonDecoration ??
               BoxDecoration(

@@ -16,83 +16,87 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: '${Env.appName}'.text.make(),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/ic_notif.svg'),
-            onPressed: () => controller.logout(),
-          ),
-        ],
-        toolbarHeight: kBottomNavigationBarHeight + 44,
-        bottom: TabBar(
-          controller: controller.tabController,
-          onTap: (index) => controller.onTabChanged(index),
-          tabs: [
-            /// tab 1: Home
-            Obx(
-              () => Tab(
-                icon: SvgPicture.asset(controller.currentTabSelected.value == 0 ? 'assets/icons/ic_home_active.svg' : 'assets/icons/ic_home_inactive.svg'),
-                text: 'Home',
-              ).pOnly(bottom: 16),
-            ),
-
-            /// tab 2: Transaction
-            Obx(
-              () => Tab(
-                icon: SvgPicture.asset(controller.currentTabSelected.value == 1 ? 'assets/icons/ic_trx_active.svg' : 'assets/icons/ic_trx_inactive.svg'),
-                text: 'Transaction',
-              ).pOnly(bottom: 16),
-            ),
-
-            /// tab 3: Report
-            Obx(
-              () => Tab(
-                icon: SvgPicture.asset(controller.currentTabSelected.value == 2 ? 'assets/icons/ic_report_active.svg' : 'assets/icons/ic_report_inactive.svg'),
-                text: 'Report',
-              ).pOnly(bottom: 16),
-            ),
-
-            /// tab 4: Tools
-            Obx(
-              () => Tab(
-                icon: SvgPicture.asset(controller.currentTabSelected.value == 3 ? 'assets/icons/ic_tools_active.svg' : 'assets/icons/ic_tools_inactive.svg'),
-                text: 'Tools',
-              ).pOnly(bottom: 16),
+    return GestureDetector(
+      onTap: () => controller.onForceCloseSlider(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: '${Env.appName}'.text.make(),
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset('assets/icons/ic_notif.svg'),
+              onPressed: () => {},
             ),
           ],
-        ),
-      ),
-      body: Stack(
-        children: [
-          TabBarView(
+          toolbarHeight: kBottomNavigationBarHeight + 44,
+          bottom: TabBar(
             controller: controller.tabController,
-            children: [
-              TabHome(),
-              TabTransaction(),
-              TabReport(),
-              TabTools(),
+            onTap: (index) => controller.onTabChanged(index),
+            tabs: [
+              /// tab 1: Home
+              Obx(
+                () => Tab(
+                  icon: SvgPicture.asset(controller.currentTabSelected.value == 0 ? 'assets/icons/ic_home_active.svg' : 'assets/icons/ic_home_inactive.svg'),
+                  text: 'Home',
+                ).pOnly(bottom: 16),
+              ),
+
+              /// tab 2: Transaction
+              Obx(
+                () => Tab(
+                  icon: SvgPicture.asset(controller.currentTabSelected.value == 1 ? 'assets/icons/ic_trx_active.svg' : 'assets/icons/ic_trx_inactive.svg'),
+                  text: 'Transaction',
+                ).pOnly(bottom: 16),
+              ),
+
+              /// tab 3: Report
+              Obx(
+                () => Tab(
+                  icon: SvgPicture.asset(controller.currentTabSelected.value == 2 ? 'assets/icons/ic_report_active.svg' : 'assets/icons/ic_report_inactive.svg'),
+                  text: 'Report',
+                ).pOnly(bottom: 16),
+              ),
+
+              /// tab 4: Tools
+              Obx(
+                () => Tab(
+                  icon: SvgPicture.asset(controller.currentTabSelected.value == 3 ? 'assets/icons/ic_tools_active.svg' : 'assets/icons/ic_tools_inactive.svg'),
+                  text: 'Tools',
+                ).pOnly(bottom: 16),
+              ),
             ],
           ),
-
-          /// --- curve refresh button ---
-          ClipperContainer(
-            clipper: HomeClipper(120),
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset('assets/icons/ic_refresh.svg'),
-                  ),
-                ],
-              ),
+        ),
+        body: Stack(
+          children: [
+            TabBarView(
+              controller: controller.tabController,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                TabHome(),
+                TabTransaction(),
+                TabReport(),
+                TabTools(),
+              ],
             ),
-          ).h(120),
-        ],
+
+            /// --- curve refresh button ---
+            ClipperContainer(
+              clipper: HomeClipper(120),
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    IconButton(
+                      onPressed: () => controller.onRefresh(),
+                      icon: SvgPicture.asset('assets/icons/ic_refresh.svg'),
+                    ),
+                  ],
+                ),
+              ),
+            ).h(120),
+          ],
+        ),
       ),
     );
   }

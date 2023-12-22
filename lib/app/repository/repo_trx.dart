@@ -17,6 +17,8 @@ enum TransactionType {
 class TransactionRepository {
   Future<List<TransactionsGetData>> getTransactions({
     required num trxId,
+    String? outletId,
+    String? userId,
     String? startDate,
     String? endDate,
   }) async {
@@ -25,8 +27,8 @@ class TransactionRepository {
         '/API/Trx/Get',
         data: {
           'act': 'trxGet',
-          'outlet_id': AppPref.currentOutletId,
-          'user_id': AppPref.currentUserId,
+          'outlet_id': outletId ?? AppPref.currentOutletId,
+          'user_id': userId ?? AppPref.currentUserId,
           'data': {
             'trx_id': trxId,
             'status': 1,

@@ -28,7 +28,7 @@ mixin AppPref {
   static void setCurrentUserId(String id) => pref.write(kCurrentUserId, id);
 
   /// * currentUserRole
-  static String get currentUserRole => pref.read(kCurrentUserRole) ?? '';
+  static String? get currentUserRole => pref.read(kCurrentUserRole);
   static void setCurrentUserRole(String role) => pref.write(kCurrentUserRole, role);
 
   /// * currentOutletId

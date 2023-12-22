@@ -21,15 +21,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: Env.appName,
-      initialRoute: AppPages.INITIAL,
-      theme: AppTheme.light,
-      themeMode: AppTheme.currentTheme,
-      darkTheme: AppTheme.dark,
-      debugShowCheckedModeBanner: false,
-      getPages: AppPages.routes,
-      defaultTransition: Transition.fadeIn,
+    return GestureDetector(
+      onTap: () {
+        /// close keyboard tap anywhere
+        FocusScopeNode currentFocus = FocusScope.of(Get.context!);
+        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+      },
+      child: GetMaterialApp(
+        title: Env.appName,
+        initialRoute: AppPages.INITIAL,
+        theme: AppTheme.light,
+        themeMode: AppTheme.currentTheme,
+        darkTheme: AppTheme.dark,
+        debugShowCheckedModeBanner: false,
+        getPages: AppPages.routes,
+        defaultTransition: Transition.fadeIn,
+      ),
     );
   }
 }

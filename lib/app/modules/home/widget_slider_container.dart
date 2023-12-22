@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../core/app_pref.dart';
 import '../../extensions/ext_money.dart';
 import '../../helpers/helper_decoration.dart';
+import '../../repository/repo_trx.dart';
 import '../../widgets/dash_divider.dart';
 import 'home_controller.dart';
 
@@ -12,20 +14,23 @@ import 'home_controller.dart';
 /// ? Appearance After Slide Opened ~
 /// screenshoot: <img>https://img001.prntscr.com/file/img001/M3hN-fB9QoamsNMiNqVhsA.png</img>
 class WidgetSliderContainer extends GetView<HomeController> {
-  const WidgetSliderContainer({super.key});
+  const WidgetSliderContainer({super.key, this.height});
 
+  final double? height;
   @override
   Widget build(BuildContext context) {
+    final trxTypeList = controller.initData.value.trxTipe ?? [];
+
     return AnimatedContainer(
       duration: 200.milliseconds,
       width: controller.sliderWidth.value,
-      height: 180,
+      height: height,
       curve: Curves.easeInOut,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           /// slide menu :background
-          SvgPicture.asset('assets/icons/slide_open.svg', height: 180),
+          SvgPicture.asset('assets/icons/slide_open.svg', height: height),
 
           /// slide menu :content
           VStack(
@@ -77,36 +82,51 @@ class WidgetSliderContainer extends GetView<HomeController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  /// menu :masuk
                   Column(
                     children: [
                       SvgPicture.asset('assets/icons/ic_input_in.svg'),
                       'Masuk'.text.size(12).make(),
                     ],
-                  ).onInkTap(() => controller.goInputIn()),
+                  ).onInkTap(() => controller.goInputInOrOut(TransactionType.debet)),
+
+                  /// menu :keluar
                   Column(
                     children: [
                       SvgPicture.asset('assets/icons/ic_input_out.svg'),
                       'Keluar'.text.size(12).make(),
                     ],
-                  ).onInkTap(() => controller.goInputOut()),
-                  Column(
-                    children: [
-                      SvgPicture.asset('assets/icons/ic_input_move.svg'),
-                      'Pindah'.text.size(12).make(),
-                    ],
-                  ).onInkTap(() => controller.goInputMove()),
-                  Column(
-                    children: [
-                      SvgPicture.asset('assets/icons/ic_input_mutation.svg'),
-                      'Mutasi'.text.size(12).make(),
-                    ],
-                  ).onInkTap(() => controller.goInputMutation()),
-                  Column(
-                    children: [
-                      SvgPicture.asset('assets/icons/ic_input_kurs.svg'),
-                      'Kurs'.text.size(12).make(),
-                    ],
-                  ).onInkTap(() => controller.goInputKurs()),
+                  ).onInkTap(() => controller.goInputInOrOut(TransactionType.kredit)),
+
+                  /// menu :pindah -> admin or manager
+                  if (AppPref.currentUserRole == 'Admin' || AppPref.currentUserRole == 'Manager') ...[
+                    Column(
+                      children: [
+                        SvgPicture.asset('assets/icons/ic_input_move.svg'),
+                        'Pindah'.text.size(12).make(),
+                      ],
+                    ).onInkTap(() => controller.goInputMove()),
+                  ],
+
+                  /// menu :mutasi
+                  if (trxTypeList.length > 3) ...[
+                    Column(
+                      children: [
+                        SvgPicture.asset('assets/icons/ic_input_mutation.svg'),
+                        'Mutasi'.text.size(12).make(),
+                      ],
+                    ).onInkTap(() => controller.goInputMutation()),
+                  ],
+
+                  /// menu :kurs
+                  if (trxTypeList.length > 4) ...[
+                    Column(
+                      children: [
+                        SvgPicture.asset('assets/icons/ic_input_kurs.svg'),
+                        'Kurs'.text.size(12).make(),
+                      ],
+                    ).onInkTap(() => controller.goInputKurs()),
+                  ],
                 ],
               ).w(290),
             ],

@@ -6,8 +6,7 @@ abstract class Routes {
   static const ROOT = '/';
   static const HOME = '/home';
   static const LOGIN = '/login';
-  static const TRX_IN = '/trx-in';
-  static const TRX_OUT = '/trx-out';
+  static const TRX_IN_OUT = '/trx-in-out';
   static const TRX_MOVE = '/trx-move';
   static const TRX_KURS = '/trx-kurs';
   static const TRX_MUTATION = '/trx-mutation';

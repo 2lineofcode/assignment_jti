@@ -45,5 +45,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Jti Adit Test would like to access your photo gallery for your profile photo upload and assignment attachment upload.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Jti Adit Test would like to access your camera for your profile photo upload and assignment attachment upload.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Enable microphone access so you can request translation with your camera</string>
 </dict>
 </plist>
