@@ -28,14 +28,14 @@ class LoginView extends GetView<LoginController> {
                 'Welcome to ${Env.appName}'.text.bold.size(16).make().pOnly(bottom: 12),
                 TextField(
                   controller: controller.tfUsername,
-                  style: TextStyle(color: primaryColor, fontSize: 13),
+                  style: TextStyle(color: colorPrimary, fontSize: 13),
                   decoration: DecorationHelper.input(hint: 'Username'),
                 ),
                 12.heightBox,
                 Obx(
                   () => TextField(
                     controller: controller.tfPassword,
-                    style: TextStyle(color: primaryColor, fontSize: 13),
+                    style: TextStyle(color: colorPrimary, fontSize: 13),
                     obscureText: !passwordVisible.value,
                     enableSuggestions: false,
                     autocorrect: false,

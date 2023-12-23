@@ -92,7 +92,7 @@ class TrxMoveView extends GetView<TrxMoveController> {
                   [
                     TextField(
                       controller: controller.tfAmount,
-                      style: TextStyle(color: primaryColor, fontSize: 13),
+                      style: TextStyle(color: colorPrimary, fontSize: 13),
                       decoration: DecorationHelper.input(hint: '0', fillColor: Colors.white),
                       inputFormatters: [CurrencyTextInputFormatter(symbol: '', decimalDigits: 0)],
                       keyboardType: TextInputType.number,
@@ -125,7 +125,7 @@ class TrxMoveView extends GetView<TrxMoveController> {
                         child: Container(
                           height: 63,
                           constraints: BoxConstraints(minWidth: 70),
-                          color: secondaryColor,
+                          color: colorSecondary,
                           child: IconButton(
                             onPressed: () async {
                               if (controller.photos.length >= 4) {
@@ -142,7 +142,7 @@ class TrxMoveView extends GetView<TrxMoveController> {
                         Container(
                           height: 63,
                           constraints: BoxConstraints(minWidth: 70, maxWidth: 70),
-                          color: secondaryColor,
+                          color: colorSecondary,
                           child: Stack(
                             children: [
                               Image.memory(
@@ -173,7 +173,7 @@ class TrxMoveView extends GetView<TrxMoveController> {
                   [
                     TextField(
                       controller: controller.tfDescription,
-                      style: TextStyle(color: primaryColor, fontSize: 13),
+                      style: TextStyle(color: colorPrimary, fontSize: 13),
                       decoration: DecorationHelper.input(
                         fillColor: Colors.white,
                         hint: 'Write something for more information...',

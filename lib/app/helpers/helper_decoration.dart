@@ -30,7 +30,7 @@ mixin DecorationHelper {
       contentPadding: contentPadding ?? EdgeInsets.only(top: 2, bottom: 2, left: 12, right: 12),
       icon: icon,
       labelText: label,
-      labelStyle: TextStyle(fontSize: 13, color: primaryColor),
+      labelStyle: TextStyle(fontSize: 13, color: colorPrimary),
       // prefix
       prefix: prefix,
       prefixIcon: prefixIcon,

@@ -29,7 +29,7 @@ class TabHome extends GetView<HomeController> {
               VStack(
                 [
                   /// outletName
-                  Obx(() => '# Outlet: ${controller.initData.value.outlet?.outletName ?? '...'}'.text.bold.color(primaryColor).make().pOnly(bottom: 12)),
+                  Obx(() => '# Outlet: ${controller.initData.value.outlet?.outletName ?? '...'}'.text.bold.color(colorPrimary).make().pOnly(bottom: 12)),
 
                   /// list
                   controller.obx(

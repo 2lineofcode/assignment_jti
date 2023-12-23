@@ -6,7 +6,11 @@ const kToken = 'token';
 const kCurrentUserId = 'current_user_id';
 const kCurrentUserRole = 'current_user_role';
 const kCurrentOutletId = 'current_outlet_id';
+
+/// const
 const kDateFormatYMD = 'y-MM-d';
+const kBgServiceUniqId = '1';
+const kBgServiceTaskName = 'simple-hit-api';
 
 final pref = GetStorage();
 

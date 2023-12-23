@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'app/core/app_theme.dart';
 import 'app/routes/app_pages.dart';
+import 'bg_service.dart';
 import 'env.g.dart';
 
 Future<void> main() async {
@@ -12,6 +12,9 @@ Future<void> main() async {
 
   /// initialize get_storage (shared preference)
   await GetStorage.init();
+
+  /// background service
+  await initBackgroundService();
 
   runApp(MyApp());
 }

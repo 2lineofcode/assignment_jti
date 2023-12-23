@@ -9,27 +9,27 @@ mixin AppTheme {
       elevation: 0,
       centerTitle: true,
       backgroundColor: Colors.white,
-      titleTextStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: primaryColor),
+      titleTextStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: colorPrimary),
       iconTheme: IconThemeData(
-        color: primaryColor,
+        color: colorPrimary,
       ),
     ),
-    scaffoldBackgroundColor: primaryColor,
+    scaffoldBackgroundColor: colorPrimary,
 
     /// ! button
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: secondaryColor,
-        foregroundColor: primaryColor,
+        backgroundColor: colorSecondary,
+        foregroundColor: colorPrimary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(90)),
       ),
     ),
 
     /// ! tabbar
     tabBarTheme: TabBarTheme(
-      labelColor: primaryColor,
+      labelColor: colorPrimary,
       labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-      unselectedLabelColor: secondaryColor,
+      unselectedLabelColor: colorSecondary,
       unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 11),
       labelPadding: EdgeInsets.zero,
       indicatorColor: Colors.transparent,
@@ -37,13 +37,13 @@ mixin AppTheme {
 
     /// ! text
     textTheme: TextTheme(
-      bodyMedium: TextStyle(color: primaryColor),
-      bodySmall: TextStyle(color: primaryColor),
-      bodyLarge: TextStyle(color: primaryColor),
+      bodyMedium: TextStyle(color: colorPrimary),
+      bodySmall: TextStyle(color: colorPrimary),
+      bodyLarge: TextStyle(color: colorPrimary),
     ),
 
     /// ! icon
-    iconTheme: IconThemeData(color: primaryColor),
+    iconTheme: IconThemeData(color: colorPrimary),
   );
 
   static final dark = ThemeData.dark(useMaterial3: true).copyWith();

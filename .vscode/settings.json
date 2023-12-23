@@ -11,10 +11,10 @@
         ".firebase": true,
         ".flutter-**": true,
         "linux": true,
-        "android": false,
+        "android": true,
         "windows": true,
         "macos": true,
-        "ios": false,
+        "ios": true,
         "web": true,
         "build": true,
         "supabase": true

@@ -2,6 +2,10 @@ import 'dart:developer' as developer;
 
 import '../../env.g.dart';
 
+/*
+ * IDE Debug Log Colorize [ASCII]
+ * Created by AditP at (c) 2021, LLC. All rights reserved.
+ */
 final _appName = Env.appName;
 
 void print(dynamic msg, {String? name}) => developer.log('${LogColor.white}$msg${LogColor.reset}', name: name ?? _appName);
